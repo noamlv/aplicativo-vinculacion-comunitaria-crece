@@ -28,7 +28,7 @@ export const surveyInstrument: SurveyInstrument = {
       title: "Su vínculo con la organización",
       shortTitle: "Vínculo",
       description:
-        "Estas preguntas nos permiten conocer cómo circula la invitación y qué relación mantiene con la organización comunitaria.",
+        "Estas preguntas nos permiten conocer qué relación mantiene con la organización comunitaria.",
       questions: [
         {
           id: "relacion_obc",
