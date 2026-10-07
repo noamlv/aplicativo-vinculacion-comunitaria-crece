@@ -148,8 +148,8 @@ function Header() {
       <div className="brand-lockup" aria-label="ONUSIDA Perú y Proyecto CRECE">
         <Image
           className="onusida-logo"
-          src="/assets/logo-onusida-color.png"
-          width={223}
+          src="/assets/logo-onusida-es-color.png"
+          width={255}
           height={42}
           priority
           alt="ONUSIDA"
