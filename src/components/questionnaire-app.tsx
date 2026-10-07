@@ -142,7 +142,7 @@ function Header() {
         <p className="eyebrow">PROYECTO CRECE · VINCULACIÓN COMUNITARIA</p>
         <h1>Conectemos con su comunidad</h1>
         <p className="header-lead">
-          Una iniciativa de ONUSIDA Perú desarrollada junto con organizaciones de base comunitaria.
+          Cuéntenos qué temas le interesan y cómo le gustaría participar en futuras actividades.
         </p>
       </div>
       <div className="brand-lockup" aria-label="ONUSIDA Perú y Proyecto CRECE">
