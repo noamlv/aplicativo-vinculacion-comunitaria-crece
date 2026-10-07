@@ -140,7 +140,7 @@ function Header() {
     <header className="site-header">
       <div className="header-copy">
         <p className="eyebrow">PROYECTO CRECE · VINCULACIÓN COMUNITARIA</p>
-        <h1>Conectemos con su comunidad</h1>
+        <h1>Vinculación comunitaria</h1>
         <p className="header-lead">
           Cuéntenos qué temas le interesan y cómo le gustaría participar en futuras actividades.
         </p>
@@ -148,9 +148,9 @@ function Header() {
       <div className="brand-lockup" aria-label="ONUSIDA Perú y Proyecto CRECE">
         <Image
           className="onusida-logo"
-          src="/assets/logo-onusida.png"
-          width={479}
-          height={221}
+          src="/assets/logo-onusida-color.png"
+          width={223}
+          height={42}
           priority
           alt="ONUSIDA"
         />
@@ -367,7 +367,7 @@ export default function QuestionnaireApp() {
             <ShieldCheck aria-hidden="true" />
             <h3>Participación voluntaria</h3>
             <p>
-              Sus respuestas serán utilizadas por el proyecto CRECE para conocer redes e intereses comunitarios y compartir futuras convocatorias. El proyecto CRECE es una iniciativa de ONUSIDA Perú desarrollada junto con organizaciones de base comunitaria.
+              Sus respuestas serán utilizadas para conocer redes e intereses comunitarios y compartir futuras convocatorias del proyecto CRECE, una iniciativa de ONUSIDA Perú desarrollada junto con organizaciones de base comunitaria.
             </p>
             <label className="consent-check">
               <input
