@@ -10,13 +10,23 @@ const answerSchema = z.union([
 
 const contactSchema = z
   .object({
-    authorized: z.literal(true),
+    authorized: z.boolean(),
     preferredName: z.string().trim().min(1).max(200),
-    method: z.enum(["WhatsApp", "Correo electrónico", "Llamada telefónica"]),
-    value: z.string().trim().min(3).max(320),
+    phone: z.string().regex(/^9\d{8}$/),
+    email: z.union([z.literal(""), z.string().email().max(254)]),
+    method: z.enum(["WhatsApp", "Correo electrónico", "Llamada telefónica"]).nullable(),
     availability: z.array(z.string().max(80)).max(10),
   })
-  .strict();
+  .strict()
+  .superRefine((contact, context) => {
+    if (contact.authorized && !contact.method) {
+      context.addIssue({
+        code: "custom",
+        path: ["method"],
+        message: "Seleccione el medio de contacto preferido.",
+      });
+    }
+  });
 
 const submissionSchema = z.object({
   instrumentId: z.literal("crece-vinculacion-comunitaria"),
@@ -30,7 +40,7 @@ const submissionSchema = z.object({
     })
     .strict(),
   answers: z.record(z.string(), answerSchema),
-  contact: contactSchema.nullable(),
+  contact: contactSchema,
 });
 
 export async function POST(request: Request) {

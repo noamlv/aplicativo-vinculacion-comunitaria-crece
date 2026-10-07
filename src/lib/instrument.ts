@@ -17,7 +17,7 @@ const communityTopics: SurveyOption[] = [
 
 export const surveyInstrument: SurveyInstrument = {
   id: "crece-vinculacion-comunitaria",
-  version: "2026-10-v1",
+  version: "2026-10-v2",
   title: "Encuesta breve de vinculación comunitaria",
   description:
     "Queremos conocer su vínculo con las organizaciones comunitarias y los temas sobre los que le gustaría recibir información o participar en futuras actividades.",
@@ -31,15 +31,22 @@ export const surveyInstrument: SurveyInstrument = {
         "Estas preguntas nos permiten conocer qué relación mantiene con la organización comunitaria.",
       questions: [
         {
+          id: "nombre_organizacion_obc",
+          type: "text",
+          prompt: "Nombre de la organización de base comunitaria que le compartió esta encuesta",
+          required: true,
+          placeholder: "Escriba el nombre de la organización",
+        },
+        {
           id: "relacion_obc",
           type: "single",
           prompt: "¿Cuál es su relación con la organización que compartió esta encuesta?",
           required: true,
           options: [
-            { value: "Soy integrante o asociada/o", label: "Soy integrante o asociada/o" },
+            { value: "Soy integrantx o asociadx", label: "Soy integrantx o asociadx" },
             { value: "He participado en sus actividades", label: "He participado en sus actividades" },
-            { value: "Soy aliada/o o colaboradora/or", label: "Soy aliada/o o colaboradora/or" },
-            { value: "Soy amiga/o o familiar de una persona integrante", label: "Soy amiga/o o familiar de una persona integrante" },
+            { value: "Soy aliadx o persona colaboradora", label: "Soy aliadx o persona colaboradora" },
+            { value: "Soy amigx o familiar de una persona integrante", label: "Soy amigx o familiar de una persona integrante" },
             { value: "Recibí la invitación de una persona conocida", label: "Recibí la invitación de una persona conocida" },
             { value: "La encontré en redes sociales", label: "La encontré en redes sociales" },
             other,
@@ -65,14 +72,14 @@ export const surveyInstrument: SurveyInstrument = {
           options: [
             { value: "Sí", label: "Sí" },
             { value: "No", label: "No" },
-            { value: "No estoy segura/o", label: "No estoy segura/o" },
+            { value: "No estoy segurx", label: "No estoy segurx" },
           ],
         },
         {
           id: "temas_reconocidos",
           type: "multiple",
           prompt: "¿Con qué temas relaciona el trabajo de esta organización?",
-          helper: "Puede seleccionar más de una opción.",
+          helper: "Puede marcar más de una opción.",
           required: false,
           options: communityTopics,
           showWhen: (answers) => answers.conocimiento_obc !== "No la conocía",
@@ -90,7 +97,7 @@ export const surveyInstrument: SurveyInstrument = {
           id: "temas_interes",
           type: "multiple",
           prompt: "¿Sobre qué temas le interesaría recibir información o participar en una actividad?",
-          helper: "Puede seleccionar más de una opción.",
+          helper: "Puede marcar más de una opción.",
           required: true,
           options: communityTopics,
         },
@@ -98,6 +105,7 @@ export const surveyInstrument: SurveyInstrument = {
           id: "actividades_preferidas",
           type: "multiple",
           prompt: "¿En qué tipo de actividades le interesaría participar?",
+          helper: "Puede marcar más de una opción.",
           required: true,
           options: [
             { value: "Taller presencial", label: "Taller presencial" },
@@ -132,11 +140,11 @@ export const surveyInstrument: SurveyInstrument = {
           id: "vinculacion_comunitaria",
           type: "multiple",
           prompt: "De manera opcional, ¿con cuáles de estas comunidades o experiencias se identifica o vincula?",
-          helper: "Puede seleccionar más de una opción o elegir «Prefiero no responder».",
+          helper: "Puede marcar más de una opción o elegir «Prefiero no responder».",
           required: false,
           options: [
             { value: "Mujeres trans", label: "Mujeres trans" },
-            { value: "Mujeres lesbianas, bisexuales u otras orientaciones sexuales diversas", label: "Mujeres lesbianas, bisexuales u otras orientaciones sexuales diversas" },
+            { value: "Persona LGTBIQ+", label: "Persona LGTBIQ+" },
             { value: "Mujeres que realizan o realizaron trabajo sexual", label: "Mujeres que realizan o realizaron trabajo sexual" },
             { value: "Mujeres migrantes", label: "Mujeres migrantes" },
             { value: "Personas que viven con VIH", label: "Personas que viven con VIH" },
@@ -148,7 +156,7 @@ export const surveyInstrument: SurveyInstrument = {
         {
           id: "disposicion_compartir",
           type: "single",
-          prompt: "¿Estaría dispuesta/o a compartir futuras convocatorias con otras personas de su red?",
+          prompt: "¿Estaría dispuestx a compartir futuras convocatorias con otras personas de su red?",
           required: true,
           options: [
             { value: "Sí", label: "Sí" },
@@ -177,25 +185,50 @@ export const surveyInstrument: SurveyInstrument = {
       title: "Contacto para futuras actividades",
       shortTitle: "Contacto",
       description:
-        "Puede responder sin dejar datos de contacto. Solo los solicitamos si desea recibir invitaciones del proyecto CRECE.",
+        "Estos datos permitirán compartirle información sobre futuras actividades del proyecto CRECE.",
       questions: [
-        {
-          id: "autoriza_contacto",
-          type: "single",
-          prompt: "¿Desea recibir información o invitaciones sobre futuras actividades del proyecto CRECE?",
-          required: true,
-          options: [
-            { value: "Sí, autorizo que me contacten", label: "Sí, autorizo que me contacten" },
-            { value: "No deseo que me contacten", label: "No deseo que me contacten" },
-          ],
-        },
         {
           id: "nombre_preferido",
           type: "text",
-          prompt: "Nombre o nombre social",
+          prompt: "Indique su nombre completo o nombre social",
           required: true,
-          placeholder: "Escriba cómo desea que le llamemos",
-          showWhen: (answers) => answers.autoriza_contacto === "Sí, autorizo que me contacten",
+          placeholder: "Escriba su nombre completo o nombre social",
+        },
+        {
+          id: "numero_celular",
+          type: "text",
+          prompt: "Número de celular",
+          required: true,
+          inputMode: "tel",
+          maxLength: 9,
+          placeholder: "Ejemplo: 987654321",
+          validate: (value) =>
+            typeof value === "string" && /^9\d{8}$/.test(value)
+              ? null
+              : "Ingrese un número de celular peruano válido de 9 dígitos, empezando con 9.",
+        },
+        {
+          id: "correo_electronico",
+          type: "text",
+          prompt: "Correo electrónico",
+          required: false,
+          inputMode: "email",
+          maxLength: 254,
+          placeholder: "nombre@correo.com (opcional)",
+          validate: (value) =>
+            typeof value === "string" && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)
+              ? null
+              : "Ingrese un correo electrónico válido.",
+        },
+        {
+          id: "autoriza_contacto",
+          type: "single",
+          prompt: "¿Le gustaría que le contactemos para compartirle información sobre futuras actividades del proyecto CRECE?",
+          required: true,
+          options: [
+            { value: "Sí", label: "Sí" },
+            { value: "No", label: "No" },
+          ],
         },
         {
           id: "medio_contacto",
@@ -207,21 +240,13 @@ export const surveyInstrument: SurveyInstrument = {
             { value: "Correo electrónico", label: "Correo electrónico" },
             { value: "Llamada telefónica", label: "Llamada telefónica" },
           ],
-          showWhen: (answers) => answers.autoriza_contacto === "Sí, autorizo que me contacten",
-        },
-        {
-          id: "dato_contacto",
-          type: "text",
-          prompt: "Número de teléfono o correo electrónico",
-          required: true,
-          inputMode: "text",
-          placeholder: "Escriba el dato de contacto correspondiente",
-          showWhen: (answers) => answers.autoriza_contacto === "Sí, autorizo que me contacten",
+          showWhen: (answers) => answers.autoriza_contacto === "Sí",
         },
         {
           id: "horario_contacto",
           type: "multiple",
-          prompt: "¿En qué momentos suele tener mayor disponibilidad?",
+          prompt: "¿En qué momentos tiene mayor disponibilidad?",
+          helper: "Puede marcar más de una opción.",
           required: false,
           options: [
             { value: "Mañanas", label: "Mañanas" },
@@ -229,7 +254,7 @@ export const surveyInstrument: SurveyInstrument = {
             { value: "Noches", label: "Noches" },
             { value: "Fines de semana", label: "Fines de semana" },
           ],
-          showWhen: (answers) => answers.autoriza_contacto === "Sí, autorizo que me contacten",
+          showWhen: (answers) => answers.autoriza_contacto === "Sí",
         },
         {
           id: "comentario",

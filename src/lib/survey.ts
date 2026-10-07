@@ -26,9 +26,13 @@ export function isQuestionAnswered(question: SurveyQuestion, answers: Answers) {
 }
 
 export function questionError(question: SurveyQuestion, answers: Answers) {
-  if (!question.required || isQuestionAnswered(question, answers)) return null;
-  if (question.type === "multiple") return "Seleccione al menos una opción.";
-  return "Esta pregunta es obligatoria.";
+  const answered = isQuestionAnswered(question, answers);
+  if (question.required && !answered) {
+    if (question.type === "multiple") return "Seleccione al menos una opción.";
+    return "Esta pregunta es obligatoria.";
+  }
+  if (answered && question.validate) return question.validate(answers[question.id]);
+  return null;
 }
 
 export function cleanVisibleAnswers(answers: Answers, questions: SurveyQuestion[]) {

@@ -26,11 +26,13 @@ import {
 } from "@/lib/survey";
 import type { AnswerValue, Answers, SurveyQuestion } from "@/lib/types";
 
-const DRAFT_KEY = "crece-community-outreach-draft-v1";
+const DRAFT_KEY = "crece-community-outreach-draft-v2";
 const CONTACT_FIELDS = new Set([
   "nombre_preferido",
+  "numero_celular",
+  "correo_electronico",
+  "autoriza_contacto",
   "medio_contacto",
-  "dato_contacto",
   "horario_contacto",
 ]);
 
@@ -63,8 +65,13 @@ function QuestionControl({
       placeholder: question.placeholder,
       "aria-invalid": invalid,
       "aria-describedby": describedBy,
-      onChange: (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
-        onChange(question.id, event.target.value),
+      maxLength: question.maxLength,
+      onChange: (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+        const nextValue = question.inputMode === "tel"
+          ? event.target.value.replace(/\D/g, "").slice(0, question.maxLength)
+          : event.target.value;
+        onChange(question.id, nextValue);
+      },
     };
     return question.type === "textarea" ? (
       <textarea {...shared} rows={4} />
@@ -135,17 +142,27 @@ function Header() {
         <p className="eyebrow">PROYECTO CRECE · VINCULACIÓN COMUNITARIA</p>
         <h1>Conectemos con su comunidad</h1>
         <p className="header-lead">
-          Cuéntenos qué temas le interesan y cómo le gustaría participar en futuras actividades.
+          Una iniciativa de ONUSIDA Perú desarrollada junto con organizaciones de base comunitaria.
         </p>
       </div>
-      <Image
-        className="crece-logo"
-        src="/assets/logo-crece.png"
-        width={250}
-        height={146}
-        priority
-        alt="Proyecto CRECE"
-      />
+      <div className="brand-lockup" aria-label="ONUSIDA Perú y Proyecto CRECE">
+        <Image
+          className="onusida-logo"
+          src="/assets/logo-onusida.png"
+          width={479}
+          height={221}
+          priority
+          alt="ONUSIDA"
+        />
+        <Image
+          className="crece-logo"
+          src="/assets/logo-crece.png"
+          width={215}
+          height={218}
+          priority
+          alt="Proyecto CRECE"
+        />
+      </div>
     </header>
   );
 }
@@ -186,11 +203,17 @@ export default function QuestionnaireApp() {
   useEffect(() => {
     const timer = window.setTimeout(() => {
       const params = new URLSearchParams(window.location.search);
+      const organization = params.get("obc");
       setContext({
-        organization: params.get("obc"),
+        organization,
         leaderCode: params.get("lider"),
         referralCode: params.get("ref"),
       });
+      if (organization) {
+        setAnswers((current) => current.nombre_organizacion_obc
+          ? current
+          : { ...current, nombre_organizacion_obc: organization });
+      }
 
       const rawDraft = window.sessionStorage.getItem(DRAFT_KEY);
       if (!rawDraft) return;
@@ -234,9 +257,7 @@ export default function QuestionnaireApp() {
   }
 
   function continueSection() {
-    const invalid = visibleQuestions.filter(
-      (question) => question.required && !isQuestionAnswered(question, answers),
-    );
+    const invalid = visibleQuestions.filter((question) => questionError(question, answers));
     if (invalid.length > 0) {
       setTouched((current) => new Set([...current, ...invalid.map((question) => question.id)]));
       requestAnimationFrame(() => document.querySelector<HTMLElement>(".question.has-error")?.focus());
@@ -264,18 +285,17 @@ export default function QuestionnaireApp() {
     setSubmitError(null);
     try {
       const cleaned = cleanVisibleAnswers(answers, allQuestions);
-      const authorizesContact = cleaned.autoriza_contacto === "Sí, autorizo que me contacten";
-      const contact = authorizesContact
-        ? {
-            authorized: true as const,
-            preferredName: String(cleaned.nombre_preferido ?? ""),
-            method: String(cleaned.medio_contacto ?? ""),
-            value: String(cleaned.dato_contacto ?? ""),
-            availability: Array.isArray(cleaned.horario_contacto)
-              ? cleaned.horario_contacto
-              : [],
-          }
-        : null;
+      const authorizesContact = cleaned.autoriza_contacto === "Sí";
+      const contact = {
+        authorized: authorizesContact,
+        preferredName: String(cleaned.nombre_preferido ?? ""),
+        phone: String(cleaned.numero_celular ?? ""),
+        email: String(cleaned.correo_electronico ?? ""),
+        method: authorizesContact ? String(cleaned.medio_contacto ?? "") : null,
+        availability: authorizesContact && Array.isArray(cleaned.horario_contacto)
+          ? cleaned.horario_contacto
+          : [],
+      };
       const analyticalAnswers = Object.fromEntries(
         Object.entries(cleaned).filter(([key]) => !CONTACT_FIELDS.has(key)),
       );
@@ -347,7 +367,7 @@ export default function QuestionnaireApp() {
             <ShieldCheck aria-hidden="true" />
             <h3>Participación voluntaria</h3>
             <p>
-              Sus respuestas serán utilizadas por el proyecto CRECE para conocer redes e intereses comunitarios. Puede responder sin proporcionar datos de contacto.
+              Sus respuestas serán utilizadas por el proyecto CRECE para conocer redes e intereses comunitarios y compartir futuras convocatorias. El proyecto CRECE es una iniciativa de ONUSIDA Perú desarrollada junto con organizaciones de base comunitaria.
             </p>
             <label className="consent-check">
               <input

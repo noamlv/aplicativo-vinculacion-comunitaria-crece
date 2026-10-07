@@ -2,6 +2,8 @@
 
 Encuesta breve para mapear el alcance de las redes de las organizaciones de base comunitaria, el conocimiento de su trabajo, los temas de interés y la disposición de las personas para participar en futuras actividades del proyecto CRECE.
 
+La versión `2026-10-v2` incorpora la organización remitente como primera pregunta, lenguaje inclusivo con `x`, datos de contacto separados y validación de celulares peruanos de nueve dígitos.
+
 ## Desarrollo local
 
 ```bash

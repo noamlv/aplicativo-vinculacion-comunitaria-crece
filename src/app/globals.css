@@ -141,10 +141,22 @@ h3 {
   line-height: 1.55;
 }
 
-.crece-logo {
-  width: min(190px, 100%);
-  height: auto;
+.brand-lockup {
+  width: 190px;
+  display: grid;
+  justify-items: center;
+  gap: 14px;
   justify-self: center;
+}
+
+.onusida-logo {
+  width: 176px;
+  height: auto;
+}
+
+.crece-logo {
+  width: 132px;
+  height: auto;
 }
 
 .intro-layout {
@@ -1097,6 +1109,18 @@ textarea.text-input {
     padding: 38px 34px 30px;
   }
 
+  .brand-lockup {
+    width: 145px;
+  }
+
+  .onusida-logo {
+    width: 140px;
+  }
+
+  .crece-logo {
+    width: 100px;
+  }
+
   .intro-layout {
     grid-template-columns: 1fr;
   }
@@ -1168,8 +1192,17 @@ textarea.text-input {
     font-size: 0.86rem;
   }
 
-  .crece-logo {
+  .brand-lockup {
     width: 82px;
+    gap: 9px;
+  }
+
+  .onusida-logo {
+    width: 82px;
+  }
+
+  .crece-logo {
+    width: 64px;
   }
 
   .intro-copy,
